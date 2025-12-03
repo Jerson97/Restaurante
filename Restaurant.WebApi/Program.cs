@@ -1,4 +1,9 @@
+using Restaurant.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Configuracion de Persistence
+builder.Services.AddPersistence(builder.Configuration);
 
 // Add services to the container.
 
