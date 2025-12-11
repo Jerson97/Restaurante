@@ -12,8 +12,8 @@ using Restaurant.Persistence.Context;
 namespace Restaurant.Persistence.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20251202201035_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251204154646_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,318 +29,398 @@ namespace Restaurant.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ActualizadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("actualizadopor");
 
                     b.Property<int?>("CreadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("creadopor");
 
                     b.Property<bool>("Eliminado")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("eliminado");
 
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("estado");
 
                     b.Property<DateTime?>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechaactualizacion");
 
                     b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechacreacion");
 
                     b.Property<int?>("MozoId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("mozoid");
 
                     b.Property<int>("NumeroMesa")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("numeromesa");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_mesas");
 
-                    b.HasIndex("MozoId");
+                    b.HasIndex("MozoId")
+                        .HasDatabaseName("ix_mesas_mozoid");
 
-                    b.ToTable("Mesa", (string)null);
+                    b.ToTable("mesas");
                 });
 
             modelBuilder.Entity("Pedido", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ActualizadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("actualizadopor");
 
                     b.Property<string>("ClienteNombre")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("clientenombre");
 
                     b.Property<string>("ClienteTelefono")
                         .HasMaxLength(9)
-                        .HasColumnType("character varying(9)");
+                        .HasColumnType("character varying(9)")
+                        .HasColumnName("clientetelefono");
 
                     b.Property<int?>("CreadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("creadopor");
 
                     b.Property<bool>("Eliminado")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("eliminado");
 
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("estado");
 
                     b.Property<DateTime?>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechaactualizacion");
 
                     b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechacreacion");
 
                     b.Property<DateTime?>("FechaEntrega")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechaentrega");
 
                     b.Property<int?>("MesaId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("mesaid");
 
                     b.Property<int?>("MozoId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("mozoid");
 
                     b.Property<int?>("RepartidorId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("repartidorid");
 
                     b.Property<string>("TipoPedido")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("tipopedido");
 
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("total");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_pedidos");
 
-                    b.HasIndex("MesaId");
+                    b.HasIndex("MesaId")
+                        .HasDatabaseName("ix_pedidos_mesaid");
 
-                    b.HasIndex("MozoId");
+                    b.HasIndex("MozoId")
+                        .HasDatabaseName("ix_pedidos_mozoid");
 
-                    b.HasIndex("RepartidorId");
+                    b.HasIndex("RepartidorId")
+                        .HasDatabaseName("ix_pedidos_repartidorid");
 
-                    b.ToTable("Pedido", (string)null);
+                    b.ToTable("pedidos");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Categoria", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ActualizadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("actualizadopor");
 
                     b.Property<int?>("CreadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("creadopor");
 
                     b.Property<bool>("Eliminado")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("eliminado");
 
                     b.Property<DateTime?>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechaactualizacion");
 
                     b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechacreacion");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombre");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_categorias");
 
-                    b.ToTable("Categoria", (string)null);
+                    b.ToTable("categorias");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Direccion", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DireccionCompleta")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("direccioncompleta");
 
                     b.Property<string>("NombreCliente")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombrecliente");
 
                     b.Property<int>("PedidoId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("pedidoid");
 
                     b.Property<string>("Referencia")
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("referencia");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasMaxLength(9)
-                        .HasColumnType("character varying(9)");
+                        .HasColumnType("character varying(9)")
+                        .HasColumnName("telefono");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_direcciones");
 
                     b.HasIndex("PedidoId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_direcciones_pedidoid");
 
-                    b.ToTable("Direccion", (string)null);
+                    b.ToTable("direcciones");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.PedidoDetalle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cantidad")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("cantidad");
 
                     b.Property<int>("PedidoId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("pedidoid");
 
                     b.Property<int>("PlatoId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("platoid");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("precio");
 
                     b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("subtotal");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_pedidodetalles");
 
-                    b.HasIndex("PedidoId");
+                    b.HasIndex("PedidoId")
+                        .HasDatabaseName("ix_pedidodetalles_pedidoid");
 
-                    b.HasIndex("PlatoId");
+                    b.HasIndex("PlatoId")
+                        .HasDatabaseName("ix_pedidodetalles_platoid");
 
-                    b.ToTable("PedidoDetalle", (string)null);
+                    b.ToTable("pedidodetalles");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Plato", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ActualizadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("actualizadopor");
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("categoriaid");
 
                     b.Property<int?>("CreadoPor")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("creadopor");
 
                     b.Property<bool>("Eliminado")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("eliminado");
 
                     b.Property<DateTime?>("FechaActualizacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechaactualizacion");
 
                     b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fechacreacion");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombre");
 
                     b.Property<decimal>("Precio")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("precio");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_platos");
 
-                    b.HasIndex("CategoriaId");
+                    b.HasIndex("CategoriaId")
+                        .HasDatabaseName("ix_platos_categoriaid");
 
-                    b.ToTable("Plato", (string)null);
+                    b.ToTable("platos");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Rol", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("nombre");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_roles");
 
                     b.HasIndex("Nombre")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_roles_nombre");
 
-                    b.ToTable("Rol", (string)null);
+                    b.ToTable("roles");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("email");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombre");
 
                     b.Property<string>("PinHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("pinhash");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_usuarios");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_usuarios_email");
 
-                    b.ToTable("Usuario", (string)null);
+                    b.ToTable("usuarios");
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.UsuarioRol", b =>
                 {
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("usuarioid");
 
                     b.Property<int>("RolId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("rolid");
 
-                    b.HasKey("UsuarioId", "RolId");
+                    b.HasKey("UsuarioId", "RolId")
+                        .HasName("pk_usuarioroles");
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("RolId")
+                        .HasDatabaseName("ix_usuarioroles_rolid");
 
-                    b.ToTable("UsuarioRol", (string)null);
+                    b.ToTable("usuarioroles");
                 });
 
             modelBuilder.Entity("Mesa", b =>
@@ -348,7 +428,8 @@ namespace Restaurant.Persistence.Migrations
                     b.HasOne("Restaurant.Domain.Entities.Usuario", "Mozo")
                         .WithMany()
                         .HasForeignKey("MozoId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_mesas_usuarios_mozoid");
 
                     b.Navigation("Mozo");
                 });
@@ -358,17 +439,20 @@ namespace Restaurant.Persistence.Migrations
                     b.HasOne("Mesa", "Mesa")
                         .WithMany("Pedidos")
                         .HasForeignKey("MesaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_pedidos_mesas_mesaid");
 
                     b.HasOne("Restaurant.Domain.Entities.Usuario", "Mozo")
                         .WithMany()
                         .HasForeignKey("MozoId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_pedidos_usuarios_mozoid");
 
                     b.HasOne("Restaurant.Domain.Entities.Usuario", "Repartidor")
                         .WithMany()
                         .HasForeignKey("RepartidorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_pedidos_usuarios_repartidorid");
 
                     b.Navigation("Mesa");
 
@@ -383,7 +467,8 @@ namespace Restaurant.Persistence.Migrations
                         .WithOne("Direccion")
                         .HasForeignKey("Restaurant.Domain.Entities.Direccion", "PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_direcciones_pedidos_pedidoid");
 
                     b.Navigation("Pedido");
                 });
@@ -394,13 +479,15 @@ namespace Restaurant.Persistence.Migrations
                         .WithMany("Detalles")
                         .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_pedidodetalles_pedidos_pedidoid");
 
                     b.HasOne("Restaurant.Domain.Entities.Plato", "Plato")
                         .WithMany()
                         .HasForeignKey("PlatoId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_pedidodetalles_platos_platoid");
 
                     b.Navigation("Pedido");
 
@@ -413,7 +500,8 @@ namespace Restaurant.Persistence.Migrations
                         .WithMany("Platos")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_platos_categorias_categoriaid");
 
                     b.Navigation("Categoria");
                 });
@@ -424,13 +512,15 @@ namespace Restaurant.Persistence.Migrations
                         .WithMany("UsuarioRoles")
                         .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_usuarioroles_roles_rolid");
 
                     b.HasOne("Restaurant.Domain.Entities.Usuario", "Usuario")
                         .WithMany("UsuarioRoles")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_usuarioroles_usuarios_usuarioid");
 
                     b.Navigation("Rol");
 

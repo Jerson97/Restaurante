@@ -6,7 +6,6 @@ public class PedidoDetalleConfiguration : IEntityTypeConfiguration<PedidoDetalle
 {
     public void Configure(EntityTypeBuilder<PedidoDetalle> builder)
     {
-        builder.ToTable("PedidoDetalle");
 
         builder.HasKey(pd => pd.Id);
 
@@ -21,13 +20,11 @@ public class PedidoDetalleConfiguration : IEntityTypeConfiguration<PedidoDetalle
             .HasColumnType("decimal(10,2)")
             .IsRequired();
 
-        // Relación con Pedido
         builder.HasOne(pd => pd.Pedido)
             .WithMany(p => p.Detalles)
             .HasForeignKey(pd => pd.PedidoId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Relación con Plato
         builder.HasOne(pd => pd.Plato)
             .WithMany()
             .HasForeignKey(pd => pd.PlatoId)

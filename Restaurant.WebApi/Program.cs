@@ -1,9 +1,12 @@
+using Restaurant.Application;
 using Restaurant.Persistence;
+using Restaurant.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Configuracion de Persistence
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 // Add services to the container.
 
@@ -24,7 +27,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseHandlerUsers();
 app.MapControllers();
 
 app.Run();

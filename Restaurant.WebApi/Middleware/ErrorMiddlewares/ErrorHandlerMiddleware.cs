@@ -66,7 +66,9 @@ namespace Restaurant.WebApi.Middleware.ErrorMiddlewares
                         break;
                 }
 
-                await context.Response.WriteAsync(JsonSerializer.Serialize(MessageResult<object>.Of(message, ex.Data, customResponse)));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(MessageResult<string>.Of(message, null!, customResponse)));
+
+
             }
         }
     }

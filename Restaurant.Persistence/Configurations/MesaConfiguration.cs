@@ -5,7 +5,6 @@ public class MesaConfiguration : IEntityTypeConfiguration<Mesa>
 {
     public void Configure(EntityTypeBuilder<Mesa> builder)
     {
-        builder.ToTable("Mesa");
 
         builder.HasKey(m => m.Id);
 

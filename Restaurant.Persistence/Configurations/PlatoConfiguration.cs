@@ -6,7 +6,6 @@ public class PlatoConfiguration : IEntityTypeConfiguration<Plato>
 {
     public void Configure(EntityTypeBuilder<Plato> builder)
     {
-        builder.ToTable("Plato");
 
         builder.HasKey(x => x.Id);
 

@@ -23,13 +23,43 @@ namespace Restaurant.Persistence.Context
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Plato> Platos { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Carga automática de TODAS las configuraciones
+            // Aplicar configuraciones
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RestaurantDbContext).Assembly);
+
+            //  Convertir tablas, columnas, claves e índices a minúsculas (recomendado para PostgreSQL)
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                // Nombre de tabla en minúsculas
+                entity.SetTableName(entity.GetTableName()?.ToLower());
+
+                // Columnas en minúsculas
+                foreach (var property in entity.GetProperties())
+                {
+                    property.SetColumnName(property.Name.ToLower());
+                }
+
+                // Keys
+                foreach (var key in entity.GetKeys())
+                {
+                    key.SetName(key.GetName()?.ToLower());
+                }
+
+                // Foreign Keys
+                foreach (var fk in entity.GetForeignKeys())
+                {
+                    fk.SetConstraintName(fk.GetConstraintName()?.ToLower());
+                }
+
+                // Indexes
+                foreach (var index in entity.GetIndexes())
+                {
+                    index.SetDatabaseName(index.GetDatabaseName()?.ToLower());
+                }
+            }
         }
     }
 }

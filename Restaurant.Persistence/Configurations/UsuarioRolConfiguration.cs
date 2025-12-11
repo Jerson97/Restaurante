@@ -6,7 +6,6 @@ public class UsuarioRolConfiguration : IEntityTypeConfiguration<UsuarioRol>
 {
     public void Configure(EntityTypeBuilder<UsuarioRol> builder)
     {
-        builder.ToTable("UsuarioRol");
 
         builder.HasKey(ur => new { ur.UsuarioId, ur.RolId });
 

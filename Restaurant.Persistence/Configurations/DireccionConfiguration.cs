@@ -6,7 +6,6 @@ public class DireccionConfiguration : IEntityTypeConfiguration<Direccion>
 {
     public void Configure(EntityTypeBuilder<Direccion> builder)
     {
-        builder.ToTable("Direccion");
 
         builder.HasKey(d => d.Id);
 

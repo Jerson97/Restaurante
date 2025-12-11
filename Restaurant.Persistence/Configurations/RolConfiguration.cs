@@ -6,7 +6,6 @@ public class RolConfiguration : IEntityTypeConfiguration<Rol>
 {
     public void Configure(EntityTypeBuilder<Rol> builder)
     {
-        builder.ToTable("Rol");
 
         builder.HasKey(r => r.Id);
 
