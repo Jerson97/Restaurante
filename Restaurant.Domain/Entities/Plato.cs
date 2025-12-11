@@ -6,8 +6,6 @@
 
         public string Nombre { get; set; } = null!;
         public decimal Precio { get; set; }
-
-        // Relación con Categoria
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; } = null!;
     }

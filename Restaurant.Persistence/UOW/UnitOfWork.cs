@@ -11,6 +11,7 @@ namespace Restaurant.Persistence.UOW
         private readonly IConfiguration configuration;
         private ICategoriaReposirory categoriaReposirory;
         private IPlatoRepository platoRepository;
+        private IUsuarioRepository usuarioRepository;
 
         public UnitOfWork(IConfiguration configuration)
         {
@@ -32,6 +33,15 @@ namespace Restaurant.Persistence.UOW
             {
                 if (platoRepository is null) platoRepository = new PlatoRepository(configuration);
                 return platoRepository;
+            }
+        }
+
+        public IUsuarioRepository Usuario
+        {
+            get
+            {
+                if (usuarioRepository is null) usuarioRepository = new UsuarioRepository(configuration);
+                return usuarioRepository;
             }
         }
     }

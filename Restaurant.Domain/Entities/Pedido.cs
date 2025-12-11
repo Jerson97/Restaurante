@@ -5,11 +5,11 @@ public class Pedido : BaseEntityLog
 {
     public int Id { get; set; }
 
-    public TipoPedido TipoPedido { get; set; }        // enum
+    public TipoPedido TipoPedido { get; set; }
     public int? MesaId { get; set; }
     public Mesa? Mesa { get; set; }
 
-    public EstadoPedido Estado { get; set; }          // enum
+    public EstadoPedido Estado { get; set; }
 
     public string? ClienteNombre { get; set; }
     public string? ClienteTelefono { get; set; }

@@ -6,5 +6,6 @@ namespace Restaurant.Application.Interfaces.IUnitOfWork
     {
         ICategoriaReposirory Categoria { get; }
         IPlatoRepository Plato { get; }
+        IUsuarioRepository Usuario { get; }
     }
 }

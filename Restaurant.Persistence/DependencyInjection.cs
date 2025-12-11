@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Restaurant.Application.Interfaces.IUnitOfWork;
+using Restaurant.Application.Interfaces.Token;
 using Restaurant.Persistence.Context;
 using Restaurant.Persistence.UOW;
 
@@ -15,6 +16,8 @@ namespace Restaurant.Persistence
 
             services.AddDbContext<RestaurantDbContext>(options =>
                 options.UseNpgsql(connectionString));
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
