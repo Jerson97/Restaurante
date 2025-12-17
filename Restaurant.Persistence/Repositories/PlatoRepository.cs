@@ -23,7 +23,7 @@ namespace Restaurant.Persistence.Repositories
             _connectionString = configuration.GetConnectionString("PostgresSQLConnection")!;
         }
 
-        public async Task<(ServiceStatus, int?, string)> CancelPlato(DeletePlatoCommandRequest request, CancellationToken cancellationToken)
+        public async Task<(ServiceStatus, int?, string)> CancelPlato(DeletePlatoCommandRequest request, int usuarioId, CancellationToken cancellationToken)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Restaurant.Persistence.Repositories
 
                 var parametros = new DynamicParameters();
                 parametros.Add("p_id", request.Id);
-                parametros.Add("p_actualizadopor", 1);
+                parametros.Add("p_actualizadopor", usuarioId);
                 parametros.Add("p_fechaactualizacion", DateTime.UtcNow);
 
                 parametros.Add("p_result", dbType: DbType.Int32, direction: ParameterDirection.InputOutput);
@@ -133,7 +133,7 @@ namespace Restaurant.Persistence.Repositories
             }
         }
 
-        public async Task<(ServiceStatus, int?, string)> InsertPlato(CreatePlatoCommandRequest request, CancellationToken cancellationToken)
+        public async Task<(ServiceStatus, int?, string)> InsertPlato(CreatePlatoCommandRequest request, int usuarioId, CancellationToken cancellationToken)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace Restaurant.Persistence.Repositories
                 parametros.Add("p_precio", request.Precio);
                 parametros.Add("p_categoriaid", request.CategoriaId);
                 parametros.Add("p_fechacreacion", DateTime.UtcNow);
-                parametros.Add("p_creadopor", 1);
+                parametros.Add("p_creadopor", usuarioId);
 
                 parametros.Add("p_id", 0, DbType.Int32, ParameterDirection.InputOutput);
                 parametros.Add("p_result", 0, DbType.Int32, ParameterDirection.InputOutput);
@@ -180,7 +180,7 @@ namespace Restaurant.Persistence.Repositories
             }
         }
 
-        public async Task<(ServiceStatus, int?, string)> UpdatePlato(UpdatePlatoCommandRequest request, CancellationToken cancellationToken)
+        public async Task<(ServiceStatus, int?, string)> UpdatePlato(UpdatePlatoCommandRequest request, int usuarioId, CancellationToken cancellationToken)
         {
             try
             {
@@ -203,7 +203,7 @@ namespace Restaurant.Persistence.Repositories
                 parametros.Add("p_nombre", request.Nombre);
                 parametros.Add("p_precio", request.Precio);
                 parametros.Add("p_categoriaid", request.CategoriaId);
-                parametros.Add("p_actualizadopor", 1);
+                parametros.Add("p_actualizadopor", usuarioId);
                 parametros.Add("p_fechaactualizacion", DateTime.UtcNow);
                 parametros.Add("p_result", 0, DbType.Int32, ParameterDirection.InputOutput);
                 parametros.Add("p_mensaje", "", DbType.String, ParameterDirection.InputOutput, size: 200);

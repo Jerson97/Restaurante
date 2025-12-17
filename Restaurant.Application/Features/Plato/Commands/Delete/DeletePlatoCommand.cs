@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using MediatR;
 using Restaurant.Application.Interfaces.IUnitOfWork;
+using Restaurant.Application.Interfaces.Security;
 using Restaurant.Domain.Enum;
 using Restaurant.Domain.Models;
 using Restaurant.Domain.Result;
@@ -17,13 +18,22 @@ namespace Restaurant.Application.Features.Plato.Commands.Delete
         public class DeletePlatoCommandHandler : IRequestHandler<DeletePlatoCommandRequest, MessageResult<int>>
         {
             private readonly IUnitOfWork _unitOfWork;
-            public DeletePlatoCommandHandler(IUnitOfWork unitOfWork)
+            private readonly ICurrentUserService _currentUserService;
+            public DeletePlatoCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
             {
                 _unitOfWork = unitOfWork;
+                _currentUserService = currentUserService;
             }
             public async Task<MessageResult<int>> Handle(DeletePlatoCommandRequest request, CancellationToken cancellationToken)
             {
-                var (status, categoria, message) = await _unitOfWork.Plato.CancelPlato(request, cancellationToken);
+                var usuarioId = _currentUserService.UsuarioId;
+
+                if (!usuarioId.HasValue)
+                {
+                    throw new ErrorHandler(HttpStatusCode.Unauthorized, "Usuario no autenticado");
+                }
+
+                var (status, categoria, message) = await _unitOfWork.Plato.CancelPlato(request, usuarioId.Value, cancellationToken);
 
                 if (status != ServiceStatus.Ok)
                 {

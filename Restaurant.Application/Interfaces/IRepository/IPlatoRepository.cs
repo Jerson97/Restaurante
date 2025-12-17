@@ -13,8 +13,8 @@ namespace Restaurant.Application.Interfaces.IRepository
     {
         Task<(ServiceStatus, DataCollection<PlatoDto>, string)> GetAll(PlatoQueryRequest request, CancellationToken cancellationToken);
         Task<(ServiceStatus, PlatoDto, string)> GetPlatoById(PlatoByIdQueryRequest request, CancellationToken cancellationToken);
-        Task<(ServiceStatus, int?, string)> InsertPlato(CreatePlatoCommandRequest request, CancellationToken cancellationToken);
-        Task<(ServiceStatus, int?, string)> UpdatePlato(UpdatePlatoCommandRequest request, CancellationToken cancellationToken);
-        Task<(ServiceStatus, int?, string)> CancelPlato(DeletePlatoCommandRequest request, CancellationToken cancellationToken);
+        Task<(ServiceStatus, int?, string)> InsertPlato(CreatePlatoCommandRequest request, int usuarioId, CancellationToken cancellationToken);
+        Task<(ServiceStatus, int?, string)> UpdatePlato(UpdatePlatoCommandRequest request, int usuarioId, CancellationToken cancellationToken);
+        Task<(ServiceStatus, int?, string)> CancelPlato(DeletePlatoCommandRequest request, int usuarioId, CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Common;
 using Restaurant.Application.Dtos;
 using Restaurant.Domain.Result;
@@ -23,9 +24,11 @@ namespace Restaurant.WebApi.Controllers
             return await Mediator.Send(new PlatoByIdQueryRequest { Id = id });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<MessageResult<int>>> CreatePlato([FromBody] CreatePlatoCommandRequest request) => Ok(await Mediator.Send(request));
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult<MessageResult<int>>> UpdatePlato(int id, [FromBody] UpdatePlatoCommandRequest request)
         {
@@ -33,6 +36,7 @@ namespace Restaurant.WebApi.Controllers
             return Ok(await Mediator.Send(request));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageResult<int>>> DeletePlato(int id)
         {

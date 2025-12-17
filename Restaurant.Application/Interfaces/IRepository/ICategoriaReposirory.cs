@@ -13,8 +13,8 @@ namespace Restaurant.Application.Interfaces.IRepository
     {
         Task<(ServiceStatus, DataCollection<CategoriaDto>, string)> GetAll(CategoriaQueryRequest request, CancellationToken cancellationToken);
         Task<(ServiceStatus, CategoriaDto, string)> GetCategoriaById(CategoriaByIdQueryRequest request, CancellationToken cancellationToken);
-        Task<(ServiceStatus, int?, string)> InsertCategoria(CreateCategoriaCommandRequest request, CancellationToken cancellationToken);
-        Task<(ServiceStatus, int?, string)> UpdateCategoria(UpdateCategoriaCommandRequest request, CancellationToken cancellationToken);
-        Task<(ServiceStatus, int?, string)> CancelCategoria(DeleteCategoriaCommandRequest request, CancellationToken cancellationToken);
+        Task<(ServiceStatus, int?, string)> InsertCategoria(CreateCategoriaCommandRequest request, int usuarioId, CancellationToken cancellationToken);
+        Task<(ServiceStatus, int?, string)> UpdateCategoria(UpdateCategoriaCommandRequest request,int usuarioId, CancellationToken cancellationToken);
+        Task<(ServiceStatus, int?, string)> CancelCategoria(DeleteCategoriaCommandRequest request, int usuarioId, CancellationToken cancellationToken);
     }
 }
