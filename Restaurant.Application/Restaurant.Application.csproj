@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Mesa\Commands\Delete\" />
-    <Folder Include="Features\Mesa\Commands\Update\" />
   </ItemGroup>
 
 </Project>
