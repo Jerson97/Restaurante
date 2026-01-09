@@ -12,6 +12,7 @@ namespace Restaurant.Persistence.UOW
         private IPlatoRepository? platoRepository;
         private IUsuarioRepository? usuarioRepository;
         private IMesaRepository? mesaRepository;
+        private IPedidoRepository pedidoRepository;
 
         public UnitOfWork(IConfiguration configuration)
         {
@@ -51,6 +52,15 @@ namespace Restaurant.Persistence.UOW
             {
                 if (mesaRepository is null) mesaRepository = new MesaRepository(configuration);
                 return mesaRepository;
+            }
+        }
+
+        public IPedidoRepository Pedido
+        {
+            get
+            {
+                if (pedidoRepository is null) pedidoRepository = new PedidoRepository(configuration);
+                return pedidoRepository;
             }
         }
     }

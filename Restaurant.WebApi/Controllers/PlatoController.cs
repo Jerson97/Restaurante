@@ -21,7 +21,7 @@ namespace Restaurant.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageResult<PlatoDto>>> GetCategoriaById(int id)
         {
-            return await Mediator.Send(new PlatoByIdQueryRequest { Id = id });
+            return Ok(await Mediator.Send(new PlatoByIdQueryRequest { Id = id }));
         }
 
         [Authorize(Roles = "Admin")]
@@ -40,7 +40,7 @@ namespace Restaurant.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<MessageResult<int>>> DeletePlato(int id)
         {
-            return await Mediator.Send(new DeletePlatoCommandRequest { Id = id });
+            return Ok(await Mediator.Send(new DeletePlatoCommandRequest { Id = id }));
         }
     }
 }

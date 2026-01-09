@@ -33,7 +33,7 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpPost("asignar-rol")]
-        // [Authorize(Roles = "Admin")] 
+        [Authorize(Roles = "Admin")] 
         public async Task<ActionResult<AssignRoleCommandResponse>> AsignarRol([FromBody] AssignRoleCommandRequest request)
         {
             return Ok(await Mediator.Send(request));

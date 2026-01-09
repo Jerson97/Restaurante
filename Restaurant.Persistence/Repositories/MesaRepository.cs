@@ -7,6 +7,7 @@ using Restaurant.Application.Dtos;
 using Restaurant.Application.Interfaces.IRepository;
 using Restaurant.Domain.Enum;
 using static Restaurant.Application.Features.Mesa.Commands.Create.CreateMesaCommand;
+using static Restaurant.Application.Features.Mesa.Commands.Update.LiberarMesaCommand;
 using static Restaurant.Application.Features.Mesa.Commands.Update.OcuparMesaCommand;
 using static Restaurant.Application.Features.Mesa.Queries.GetAll.MesaQuery;
 
@@ -71,7 +72,7 @@ namespace Restaurant.Persistence.Repositories
                 var procedure = @"CALL public.usp_mesa_insert(
                     @p_numeromesa,
                     @p_fechacreacion,
-                    @p_creadopor,
+                    @p_mozoid,
                     @p_id,
                     @p_result,
                     @p_mensaje
@@ -81,7 +82,7 @@ namespace Restaurant.Persistence.Repositories
 
                 parametros.Add("p_numeromesa", request.NumeroMesa);
                 parametros.Add("p_fechacreacion", DateTime.UtcNow);
-                parametros.Add("p_creadopor", usuarioId);
+                parametros.Add("p_mozoid", usuarioId);
 
                 parametros.Add("p_id", 0, DbType.Int32, ParameterDirection.InputOutput);
                 parametros.Add("p_result", 0, DbType.Int32, ParameterDirection.InputOutput);
@@ -105,14 +106,14 @@ namespace Restaurant.Persistence.Repositories
             }
         }
 
-        public async Task<(ServiceStatus, int?, string)> OcuparMesa(OcuparMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken)
+        public async Task<(ServiceStatus, bool, string)> LiberarMesa(LiberarMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken)
         {
             try
             {
                 using var connection = new NpgsqlConnection(_connectionString);
 
-                var procedure = @"CALL public.usp_mesa_ocupar(
-                    @p_id,
+                var procedure = @"CALL public.usp_mesa_liberar(
+                    @p_mesaid,
                     @p_mozoid,
                     @p_fechaactualizacion,
                     @p_result,
@@ -121,7 +122,7 @@ namespace Restaurant.Persistence.Repositories
 
                 var parametros = new DynamicParameters();
 
-                parametros.Add("p_id", request.MesaId, DbType.Int32, ParameterDirection.InputOutput);
+                parametros.Add("p_mesaid", request.MesaId);
                 parametros.Add("p_mozoid", usuarioId);
                 parametros.Add("p_fechaactualizacion", DateTime.UtcNow);
 
@@ -132,16 +133,57 @@ namespace Restaurant.Persistence.Repositories
 
                 var result = parametros.Get<int>("p_result");
                 var mensaje = parametros.Get<string>("p_mensaje");
-                var id = parametros.Get<int>("p_id");
 
                 if (result != 1)
-                    return (ServiceStatus.FailedValidation, null, mensaje);
+                    return (ServiceStatus.FailedValidation, false, mensaje);
 
-                return (ServiceStatus.Ok, id, mensaje);
+                return (ServiceStatus.Ok, true, mensaje);
             }
             catch (Exception ex)
             {
-                return (ServiceStatus.InternalError, null!, $"Error al ocupar mesa -> {ex.InnerException?.Message ?? ex.Message}");
+                return (ServiceStatus.InternalError, false,
+                    $"Error al liberar mesa -> {ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+
+        public async Task<(ServiceStatus, bool, string)> OcuparMesa(OcuparMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_connectionString);
+
+                var procedure = @"CALL public.usp_mesa_ocupar(
+                    @p_mesaid,
+                    @p_mozoid,
+                    @p_fechaactualizacion,
+                    @p_result,
+                    @p_mensaje
+                );";
+
+                var parametros = new DynamicParameters();
+
+                parametros.Add("p_mesaid", request.MesaId);
+                parametros.Add("p_mozoid", usuarioId);
+                parametros.Add("p_fechaactualizacion", DateTime.UtcNow);
+
+                parametros.Add("p_result", 0, DbType.Int32, ParameterDirection.InputOutput);
+                parametros.Add("p_mensaje", "", DbType.String, ParameterDirection.InputOutput, size: 200);
+
+                await connection.ExecuteAsync(procedure, parametros);
+
+                var result = parametros.Get<int>("p_result");
+                var mensaje = parametros.Get<string>("p_mensaje");
+
+                if (result != 1)
+                    return (ServiceStatus.FailedValidation, false, mensaje);
+
+                return (ServiceStatus.Ok, true, mensaje);
+
+            }
+            catch (Exception ex)
+            {
+                return (ServiceStatus.InternalError, false,
+                    $"Error al ocupar mesa -> {ex.InnerException?.Message ?? ex.Message}");
             }
         }
     }

@@ -4,6 +4,7 @@ using Restaurant.Application.Common;
 using Restaurant.Application.Dtos;
 using Restaurant.Domain.Result;
 using static Restaurant.Application.Features.Mesa.Commands.Create.CreateMesaCommand;
+using static Restaurant.Application.Features.Mesa.Commands.Update.LiberarMesaCommand;
 using static Restaurant.Application.Features.Mesa.Commands.Update.OcuparMesaCommand;
 using static Restaurant.Application.Features.Mesa.Queries.GetAll.MesaQuery;
 
@@ -22,14 +23,17 @@ namespace Restaurant.WebApi.Controllers
         public async Task<ActionResult<MessageResult<int>>> CreateMesa([FromBody] CreateMesaCommandRequest request) => Ok(await Mediator.Send(request));
 
         [Authorize(Roles = "Mozo")]
-        [HttpPut("Ocupar/{id}")]
-        public async Task<ActionResult<MessageResult<int>>> OcuparMesa(int id)
+        [HttpPut("{id}/ocupar")]
+        public async Task<ActionResult<MessageResult<bool>>> OcuparMesa(int id)
         {
-            var request = new OcuparMesaCommandRequest
-            {
-                MesaId = id
-            };
-            return Ok(await Mediator.Send(request));
+            return Ok(await Mediator.Send(new OcuparMesaCommandRequest { MesaId = id }));
+        }
+
+        [Authorize(Roles = "Mozo")]
+        [HttpPut("{id}/liberar")]
+        public async Task<ActionResult<MessageResult<bool>>> LiberarMesa(int id)
+        {
+            return Ok(await Mediator.Send(new LiberarMesaCommandRequest { MesaId = id }));
         }
     }
 }

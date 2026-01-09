@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.Domain.Entities
 {
-    public class PedidoDetalle
+    public class PedidoDetalle : BaseEntityLog
     {
         public int Id { get; set; }
         public int PedidoId { get; set; }

@@ -8,5 +8,6 @@ namespace Restaurant.Application.Interfaces.IUnitOfWork
         IPlatoRepository Plato { get; }
         IUsuarioRepository Usuario { get; }
         IMesaRepository Mesa { get; }
+        IPedidoRepository Pedido { get; }
     }
 }

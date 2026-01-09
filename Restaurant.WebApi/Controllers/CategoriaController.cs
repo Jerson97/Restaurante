@@ -21,7 +21,7 @@ namespace Restaurant.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MessageResult<CategoriaDto>>> GetCategoriaById(int id)
         {
-            return await Mediator.Send(new CategoriaByIdQueryRequest { Id = id });
+            return Ok(await Mediator.Send(new CategoriaByIdQueryRequest { Id = id }));
         }
 
         [Authorize(Roles = "Admin")]
