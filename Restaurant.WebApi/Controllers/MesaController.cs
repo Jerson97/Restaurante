@@ -6,6 +6,7 @@ using Restaurant.Domain.Result;
 using static Restaurant.Application.Features.Mesa.Commands.Create.CreateMesaCommand;
 using static Restaurant.Application.Features.Mesa.Commands.Update.LiberarMesaCommand;
 using static Restaurant.Application.Features.Mesa.Commands.Update.OcuparMesaCommand;
+using static Restaurant.Application.Features.Mesa.Queries.Get.PedidoActivoPorMesaQuery;
 using static Restaurant.Application.Features.Mesa.Queries.GetAll.MesaQuery;
 
 namespace Restaurant.WebApi.Controllers
@@ -34,6 +35,13 @@ namespace Restaurant.WebApi.Controllers
         public async Task<ActionResult<MessageResult<bool>>> LiberarMesa(int id)
         {
             return Ok(await Mediator.Send(new LiberarMesaCommandRequest { MesaId = id }));
+        }
+
+        [Authorize(Roles = "Mozo")]
+        [HttpGet("{id}/pedido-activo")]
+        public async Task<ActionResult<MessageResult<bool>>> GetPedidoActivoPorMesa(int id)
+        {
+            return Ok(await Mediator.Send(new PedidoActivoPorMesaQueryRequest { MesaId = id }));
         }
     }
 }

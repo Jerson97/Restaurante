@@ -2,9 +2,12 @@
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using Restaurant.Application.Common;
+using Restaurant.Application.Dtos;
 using Restaurant.Application.Interfaces.IRepository;
 using Restaurant.Domain.Enum;
 using static Restaurant.Application.Features.Pedido.Commands.Create.CreatePedidoMesaCommand;
+using static Restaurant.Application.Features.Pedido.Queries.Get.GetPedidosByEstadoQuery;
 
 namespace Restaurant.Persistence.Repositories
 {
@@ -104,6 +107,49 @@ namespace Restaurant.Persistence.Repositories
                 return (ServiceStatus.InternalError, null!, $"Error al crear el pedido -> {ex.InnerException?.Message ?? ex.Message}");
             }
         }
+
+        public async Task<(ServiceStatus, DataCollection<PedidoListadoDto>?, string)> GetByEstado(GetPedidosByEstadoQueryRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_connectionString);
+
+                var pedidos = (await connection.QueryAsync<PedidoListadoDto>(
+                    "SELECT * FROM public.func_get_pedidos_by_estado(@p_estado, @p_page, @p_page_size)",
+                    new 
+                    { 
+                        p_estado = request.Estado, 
+                        p_page = request.Page, 
+                        p_page_size = request.Amount 
+                    },
+                    commandType: CommandType.Text
+                )).ToList();
+
+                int total = await connection.QuerySingleAsync<int>(
+                    "SELECT public.func_get_pedidos_by_estado_count(@p_estado)",
+                    new { p_estado = request.Estado }
+                );
+
+                if (pedidos.Count == 0)
+                    return (ServiceStatus.NotFound, null, "No hay pedidos para el estado indicado");
+
+                var result = new DataCollection<PedidoListadoDto>
+                {
+                    Total = total,
+                    Items = pedidos,
+                    Page = request.Page,
+                    Pages = (int)Math.Ceiling(total / (double)request.Amount)
+                };
+
+                return (ServiceStatus.Ok, result, "Succeeded");
+            }
+            catch (Exception ex)
+            {
+                return (ServiceStatus.InternalError, null,
+                    $"Error al listar pedidos por estado -> {ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+
 
         public async Task<(ServiceStatus, bool, string)> MarkPedidoAsEntregado(int pedidoId, int usuarioId, CancellationToken cancellationToken)
         {

@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Application.Common;
+using Restaurant.Application.Dtos;
+using Restaurant.Application.Features.Pedido.Queries.Get;
 using Restaurant.Domain.Result;
 using static Restaurant.Application.Features.Pedido.Commands.Create.AgregarPlatoAPedidoCommand;
 using static Restaurant.Application.Features.Pedido.Commands.Create.CreatePedidoMesaCommand;
 using static Restaurant.Application.Features.Pedido.Commands.Update.MarcarPedidoEntregadoCommand;
 using static Restaurant.Application.Features.Pedido.Commands.Update.MarcarPedidoListoCommand;
 using static Restaurant.Application.Features.Pedido.Commands.Update.MarcarPedidoPreparandoCommand;
+using static Restaurant.Application.Features.Pedido.Queries.Get.GetPedidosByEstadoQuery;
 
 namespace Restaurant.WebApi.Controllers
 {
@@ -20,6 +24,10 @@ namespace Restaurant.WebApi.Controllers
         [Authorize(Roles = "Mozo")]
         [HttpPost("AgregarPlato")]
         public async Task<ActionResult<MessageResult<bool>>> AddPlatoPedido([FromBody] AgregarPlatoAPedidoCommandRequest request) => Ok(await Mediator.Send(request));
+
+        [Authorize(Roles = "Mozo,Admin")]
+        [HttpGet("pedidos-estado")]
+        public async Task<ActionResult<MessageResult<DataCollection<PedidoListadoDto>>>> GetPedidosByEstado(GetPedidosByEstadoQueryRequest request) => Ok(await Mediator.Send(request));
 
 
         [Authorize(Roles = "Mozo")]
@@ -42,5 +50,6 @@ namespace Restaurant.WebApi.Controllers
         {
             return Ok(await Mediator.Send(new MarcarPedidoEntregadoCommandRequest { PedidoId = id }));
         }
+
     }
 }

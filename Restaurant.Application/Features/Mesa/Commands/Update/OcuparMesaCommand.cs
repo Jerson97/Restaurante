@@ -10,12 +10,12 @@ namespace Restaurant.Application.Features.Mesa.Commands.Update
 {
     public class OcuparMesaCommand
     {
-        public class OcuparMesaCommandRequest : IRequest<MessageResult<int>>
+        public class OcuparMesaCommandRequest : IRequest<MessageResult<bool>>
         {
             public int MesaId { get; set; }
         }
 
-        public class OcuparMesaCommandHandler : IRequestHandler<OcuparMesaCommandRequest, MessageResult<int>>
+        public class OcuparMesaCommandHandler : IRequestHandler<OcuparMesaCommandRequest, MessageResult<bool>>
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly ICurrentUserService _currentUserService;
@@ -25,7 +25,7 @@ namespace Restaurant.Application.Features.Mesa.Commands.Update
                 _unitOfWork = unitOfWork;
                 _currentUserService = currentUserService;
             }
-            public async Task<MessageResult<int>> Handle(OcuparMesaCommandRequest request, CancellationToken cancellationToken)
+            public async Task<MessageResult<bool>> Handle(OcuparMesaCommandRequest request, CancellationToken cancellationToken)
             {
                 var usuarioId = _currentUserService.UsuarioId;
 
@@ -34,7 +34,7 @@ namespace Restaurant.Application.Features.Mesa.Commands.Update
                     throw new ErrorHandler(HttpStatusCode.Unauthorized, "Usuario no autenticado");
                 }
 
-                var (status, mesa, message) = await _unitOfWork.Mesa.OcuparMesa(request, usuarioId.Value, cancellationToken);
+                var (status, success, message) = await _unitOfWork.Mesa.OcuparMesa(request, usuarioId.Value, cancellationToken);
                 
                 if (status != ServiceStatus.Ok)
                 {
@@ -50,7 +50,7 @@ namespace Restaurant.Application.Features.Mesa.Commands.Update
                     throw new ErrorHandler(code, message);
                 }
 
-                return MessageResult<int>.Of(message, mesa!.Value);
+                return MessageResult<bool>.Of(message, success);
             }
         }
     }

@@ -14,5 +14,6 @@ namespace Restaurant.Application.Interfaces.IRepository
         Task<(ServiceStatus, int?, string)> InsertMesa(CreateMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken);
         Task<(ServiceStatus, bool, string)> OcuparMesa(OcuparMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken);
         Task<(ServiceStatus, bool, string)> LiberarMesa(LiberarMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken);
+        Task<(ServiceStatus, PedidoActivoMesaDto?, string)> GetPedidoActivoPorMesa(int mesaId, CancellationToken cancellationToken);
     }
 }

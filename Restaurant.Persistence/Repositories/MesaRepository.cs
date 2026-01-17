@@ -63,6 +63,30 @@ namespace Restaurant.Persistence.Repositories
             }
         }
 
+        public async Task<(ServiceStatus, PedidoActivoMesaDto?, string)> GetPedidoActivoPorMesa(int mesaId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_connectionString);
+
+                var pedido = await connection.QueryFirstOrDefaultAsync<PedidoActivoMesaDto>(
+                    "SELECT * FROM public.func_get_pedido_activo_por_mesa(@p_mesaid)",
+                    new { p_mesaid = mesaId },
+                    commandType: CommandType.Text
+                );
+
+                if (pedido == null)
+                    return (ServiceStatus.NotFound, null, "La mesa no tiene pedido activo");
+
+                return (ServiceStatus.Ok, pedido, "Succeeded");
+            }
+            catch (Exception ex)
+            {
+                return (ServiceStatus.InternalError, null,
+                    $"Error al consultar pedido activo -> {ex.InnerException?.Message ?? ex.Message}");
+            }
+        }
+
         public async Task<(ServiceStatus, int?, string)> InsertMesa(CreateMesaCommandRequest request, int usuarioId, CancellationToken cancellationToken)
         {
             try
